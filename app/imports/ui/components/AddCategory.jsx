@@ -4,13 +4,15 @@ import { Bert } from 'meteor/themeteorchef:bert';
 import AutoForm from 'uniforms-semantic/AutoForm';
 import SubmitField from 'uniforms-semantic/SubmitField';
 import ErrorsField from 'uniforms-semantic/ErrorsField';
-import { Locations, LocationsSchema } from '../../api/Locations/Locations';
 import { AutoField, HiddenField } from 'uniforms-semantic';
-import { Meteor } from "meteor/meteor";
+import { Meteor } from 'meteor/meteor';
+import { withTracker } from 'meteor/react-meteor-data';
+import PropTypes from 'prop-types';
 import * as db from '../../api/Wrapper/Wrapper';
+import { Categories, CategoriesSchema } from '../../api/Categories/Categories';
 
 /** A simple static component to render some text for the landing page. */
-class AddLocations extends React.Component {
+class AddCategory extends React.Component {
 
   /** Bind 'this' so that a ref to the Form can be saved in formRef and communicated between render() and submit(). */
   constructor(props) {
@@ -32,23 +34,24 @@ class AddLocations extends React.Component {
 
   /** On submit, insert the data. */
   submit(data) {
-    const { name, street, city, state, zip_code } = data;
-    db.addNewLocation(name, street, city, state, zip_code);
+    const { name, parent_id } = data;
+    db.addNewCategory(name, parent_id);
   }
 
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
   render() {
+    const catOps = this.props.categories.map(c => ({ label: c.name, value: c._id }));
+    catOps.unshift({ label: 'None (Creates new root category)', value: 0 });
     return (
         <Grid container centered>
           <Grid.Column>
-            <Header as="h2" textAlign="center">Add Locations</Header>
-            <AutoForm ref={(ref) => { this.formRef = ref; }} schema={LocationsSchema} onSubmit={this.submit}>
+            <Header as="h2" textAlign="center">Add Category</Header>
+            <AutoForm ref={(ref) => {
+              this.formRef = ref;
+            }} schema={CategoriesSchema} onSubmit={this.submit}>
               <Segment>
                 <AutoField name='name'/>
-                <AutoField name='street'/>
-                <AutoField name='city'/>
-                <AutoField name='state'/>
-                <AutoField name='zip_code'/>
+                <AutoField name={'parent_id'} options={catOps}/>
                 <SubmitField value='Submit'/>
                 <ErrorsField/>
               </Segment>
@@ -59,4 +62,18 @@ class AddLocations extends React.Component {
   }
 }
 
-export default AddLocations;
+/** Require an array of Contacts documents in the props. */
+AddCategory.propTypes = {
+  categories: PropTypes.array.isRequired,
+  ready: PropTypes.bool.isRequired,
+};
+
+/** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
+export default withTracker(() => {
+  // Get access to Contacts documents.
+  const s1 = Meteor.subscribe('Categories');
+  return {
+    categories: Categories.find({}).fetch(),
+    ready: s1.ready(),
+  };
+})(AddCategory);

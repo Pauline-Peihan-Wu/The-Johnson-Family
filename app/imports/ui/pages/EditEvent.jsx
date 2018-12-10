@@ -2,23 +2,22 @@ import React from 'react';
 import { Grid, Header, Loader, Segment } from 'semantic-ui-react';
 import { Bert } from 'meteor/themeteorchef:bert';
 import SubmitField from 'uniforms-semantic/SubmitField';
-import HiddenField from 'uniforms-semantic/HiddenField';
 import ErrorsField from 'uniforms-semantic/ErrorsField';
 import AutoForm from 'uniforms-semantic/AutoForm';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import { AutoField } from 'uniforms-semantic';
-import { Locations, LocationsSchema } from '../../api/Locations/Locations';
+import { Events, EventsSchema } from '/imports/api/Events/Events';
 import AdminOptions from '../components/AdminOptions';
-import ListLocations from '../components/ListLocations';
+import ListEvents from '../components/ListEvents';
 
 /** A simple static component to render some text for the landing page. */
-class EditLocations extends React.Component {
+class EditEvent extends React.Component {
   /** On successful submit, insert the data. */
   submit(data) {
-    const { name, street, city, state, zip_code, _id } = data;
-    Locations.update(_id, { $set: { name, street, city, state, zip_code } }, (error) => (error ?
+    const { name, date, _id } = data;
+    Events.update(_id, { $set: { name, date } }, (error) => (error ?
         Bert.alert({ type: 'danger', message: `Update failed: ${error.message}` }) :
         Bert.alert({ type: 'success', message: 'Update succeeded' })));
   }
@@ -42,16 +41,13 @@ class EditLocations extends React.Component {
             <Grid.Row columns={2}>
               <Grid.Column>
                 <Header as="h1">
-                  Edit Location
+                  Edit Event
                 </Header>
 
-                <AutoForm schema={LocationsSchema} onSubmit={this.submit} model={this.props.doc}>
+                <AutoForm schema={EventsSchema} onSubmit={this.submit} model={this.props.doc}>
                   <Segment>
                     <AutoField name='name'/>
-                    <AutoField name='street'/>
-                    <AutoField name='city'/>
-                    <AutoField name='state'/>
-                    <AutoField name='zip_code'/>
+                    <AutoField name={'date'}/>
                     <SubmitField value='Submit'/>
                     <ErrorsField/>
                   </Segment>
@@ -59,7 +55,7 @@ class EditLocations extends React.Component {
               </Grid.Column>
 
               <Grid.Column>
-                <ListLocations/>
+                <ListEvents/>
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -67,9 +63,10 @@ class EditLocations extends React.Component {
     }
 }
 
-/** Require the presence of a Location document in the props object. Uniforms adds 'model' to the props, which we use. */
-EditLocations.propTypes = {
+/** Require the presence of a Location document in the props object. */
+EditEvent.propTypes = {
   doc: PropTypes.object,
+  events: PropTypes.array.isRequired,
   model: PropTypes.object,
   ready: PropTypes.bool.isRequired,
 };
@@ -79,9 +76,10 @@ export default withTracker(({ match }) => {
   // Get the documentID from the URL field. See imports/ui/layouts/App.jsx for the route containing :_id.
   const documentId = match.params._id;
   // Get access to Location documents.
-  const subscription = Meteor.subscribe('Locations');
+  const s1 = Meteor.subscribe('Events');
   return {
-    doc: Locations.findOne(documentId),
-    ready: subscription.ready(),
+    doc: Events.findOne(documentId),
+    events: Events.find({}).fetch(),
+    ready: s1.ready(),
   };
-})(EditLocations);
+})(EditEvent);

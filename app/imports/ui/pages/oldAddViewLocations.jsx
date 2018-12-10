@@ -1,9 +1,10 @@
 import React from 'react';
 import { Grid, Header } from 'semantic-ui-react';
 import AdminOptions from '../components/AdminOptions';
+import ListLocations from '../components/ListLocations';
 
 /** A simple static component to render some text for the landing page. */
-class PendingAudits extends React.Component {
+class OldAddViewLocations extends React.Component {
   render() {
 
     const style = {
@@ -24,8 +25,9 @@ class PendingAudits extends React.Component {
 
           <Grid.Row>
             <Header as="h1" style={style}>
-              VERIFICATION REQUIRED
+              Locations
             </Header>
+            <ListLocations/>
           </Grid.Row>
           <Grid.Row>
 
@@ -35,4 +37,4 @@ class PendingAudits extends React.Component {
   }
 }
 
-export default PendingAudits;
+export default OldAddViewLocations;

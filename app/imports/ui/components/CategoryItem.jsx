@@ -1,12 +1,12 @@
 import React from 'react';
-import { List, Icon, Button } from 'semantic-ui-react';
-import { Locations } from '/imports/api/Locations/Locations';
+import { List, Icon } from 'semantic-ui-react';
+import { Categories } from '/imports/api/Categories/Categories';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
 import { Bert } from 'meteor/themeteorchef:bert';
-import * as db from '../../api/Wrapper/Wrapper';
+
 /** Renders a single row in the List Location table. See pages/ListLocation.jsx. */
-class Location extends React.Component {
+class CategoryItem extends React.Component {
   constructor(props) {
     super(props);
     this.onClick = this.onClick.bind(this);
@@ -21,7 +21,7 @@ class Location extends React.Component {
   }
 
   onClick() {
-    Locations.remove(this.props.loc._id, this.deleteCallback);
+    Categories.remove(this.props.category._id, this.deleteCallback);
   }
 
   render() {
@@ -30,11 +30,11 @@ class Location extends React.Component {
           <List.Item>
             <List.Content>
               <List.Header
-                  as='a'>{this.props.loc.name}</List.Header>
-               <List.Description>{this.props.loc.street}, {this.props.loc.city}, {this.props.loc.state}, {this.props.loc.zip_code}</List.Description>
+                  as='a'>{this.props.category.name}</List.Header>
+               <List.Description>Parent Category: {this.props.parent}, Level: {this.props.category.level}</List.Description>
             </List.Content>
             <List.Content floated='right'>
-              <Link to={`/editlocations/${this.props.loc._id}`}><Icon name='edit' size='large'/></Link>
+              <Link to={`/editcategory/${this.props.category._id}`}><Icon name='edit' size='large'/></Link>
               <Icon name='delete' size='large' color='red' onClick={this.onClick} />
             </List.Content>
           </List.Item>
@@ -44,9 +44,10 @@ class Location extends React.Component {
 }
 
 /** Require a document to be passed to this component. */
-Location.propTypes = {
-  loc: PropTypes.object.isRequired,
+CategoryItem.propTypes = {
+  category: PropTypes.object.isRequired,
+  parent: PropTypes.string.isRequired,
 };
 
 /** Wrap this component in withRouter since we use the <Link> React Router element. */
-export default withRouter(Location);
+export default withRouter(CategoryItem);

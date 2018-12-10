@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
@@ -7,7 +8,6 @@ import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import Landing from '../pages/Landing';
-import AddListBag from '../pages/AddListBag';
 import EditBag from '../pages/EditBag';
 import NotFound from '../pages/NotFound';
 import Signin from '../pages/Signin';
@@ -16,13 +16,22 @@ import Signout from '../pages/Signout';
 import Dashboard from '../pages/Dashboard';
 import AdminPage from '../pages/AdminPage';
 import PendingAudits from '../pages/PendingAudits';
-import SubmitData from '../pages/SubmitData';
+import AddViewLocations from '../pages/AddViewLocations';
 import EditLocations from '../pages/EditLocations';
+import EditBuilding from '../pages/EditBuilding';
+import EditCategory from '../pages/EditCategory';
+import EditEvent from '../pages/EditEvent';
 import giantestpage from '../pages/giantestpage';
 import samtestpage from '../pages/samtestpage';
-
-// import AddLocations from '../pages/AddLocations';
-// import ListLocations from '../pages/ListLocations';
+import glentestpage from '../pages/glentestpage';
+import AddEvents from '../pages/AddEvents';
+import AddCategories from '../pages/AddCategories';
+import VerifyForms from '../pages/VerifyForms';
+import ViewStudies from '../pages/ViewStudies';
+import AddBuildings from '../pages/AddBuildings';
+import ViewMembers from '../pages/ViewMembers';
+import ViewBags from '../pages/ViewBags';
+import SubmitFormContainer from '../pages/SubmitFormContainer';
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
 class App extends React.Component {
@@ -37,11 +46,22 @@ class App extends React.Component {
               <Route path="/signup" component={Signup}/>
               <Route path="/giantestpage" component={giantestpage}/>
               <Route path="/samtestpage" component={samtestpage}/>
+              <Route path="/glentestpage" component={glentestpage}/>
               <ProtectedRoute path="/pending" component={PendingAudits}/>
-              <ProtectedRoute path="/submitdata" component={SubmitData}/>
-              <ProtectedRoute path="/editlocations" component={EditLocations}/>
+              <ProtectedRoute path="/editcategory/:_id" component={EditCategory}/>
+              <ProtectedRoute path="/editlocations/:_id" component={EditLocations}/>
+              <ProtectedRoute path="/editbuilding/:_id" component={EditBuilding}/>
+              <ProtectedRoute path="/editevent/:_id" component={EditEvent}/>
               <ProtectedRoute path="/admin" component={AdminPage}/>
-              <ProtectedRoute path="/addlist" component={AddListBag}/>
+              <ProtectedRoute path="/events" component={AddEvents}/>
+              <ProtectedRoute path="/addcategories" component={AddCategories}/>
+              <ProtectedRoute path="/addviewlocations" component={AddViewLocations}/>
+              <ProtectedRoute path="/verifyforms" component={VerifyForms}/>
+              <ProtectedRoute path="/viewstudies" component={ViewStudies}/>
+              <ProtectedRoute path="/addbuildings" component={AddBuildings}/>
+              <ProtectedRoute path="/viewmembers" component={ViewMembers}/>
+              <ProtectedRoute path="/viewbags" component={ViewBags}/>
+              <ProtectedRoute path="/submitform" component={SubmitFormContainer}/>
               <ProtectedRoute path="/dash" component={Dashboard}/>
               <ProtectedRoute path="/Home" component={Landing}/>
               <ProtectedRoute path="/edit/:_id" component={EditBag}/>

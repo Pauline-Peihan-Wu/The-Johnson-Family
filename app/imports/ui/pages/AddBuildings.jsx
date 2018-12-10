@@ -1,9 +1,11 @@
 import React from 'react';
 import { Grid, Header } from 'semantic-ui-react';
 import AdminOptions from '../components/AdminOptions';
+import ListBuildings from '../components/ListBuildings';
+import AddBuilding from '../components/AddBuilding';
 
 /** A simple static component to render some text for the landing page. */
-class PendingAudits extends React.Component {
+class AddBuildings extends React.Component {
   render() {
 
     const style = {
@@ -19,20 +21,20 @@ class PendingAudits extends React.Component {
     };
 
     return (
-        <Grid container style={bodyStyle} divided='vertically' textAlign='center' verticalAlign='middle'>
+        <Grid container style={bodyStyle} divided='vertically'>
           <AdminOptions/>
 
-          <Grid.Row>
-            <Header as="h1" style={style}>
-              VERIFICATION REQUIRED
-            </Header>
-          </Grid.Row>
-          <Grid.Row>
-
+          <Grid.Row columns={2}>
+            <Grid.Column>
+              <AddBuilding/>
+            </Grid.Column>
+            <Grid.Column>
+              <ListBuildings/>
+            </Grid.Column>
           </Grid.Row>
         </Grid>
     );
   }
 }
 
-export default PendingAudits;
+export default AddBuildings;

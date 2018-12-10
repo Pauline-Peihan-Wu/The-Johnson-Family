@@ -7,7 +7,7 @@ import AddBag from '../components/AddBag';
 import ListBag from '../components/ListBag';
 
 /** A simple static component to render some text for the landing page. */
-class SubmitData extends React.Component {
+class AddViewLocations extends React.Component {
   render() {
 
     const style = {
@@ -26,9 +26,6 @@ class SubmitData extends React.Component {
         <Grid container style={bodyStyle} divided='vertically'>
           <AdminOptions/>
 
-
-
-
             <Grid.Row columns={2}>
               <Grid.Column>
                 <AddLocations/>
@@ -45,23 +42,4 @@ class SubmitData extends React.Component {
   }
 }
 
-
-
-<div>
-  <Grid container divided='vertically'>
-    <Grid.Row columns={2}>
-      <Grid.Column>
-        <AddBag/>
-      </Grid.Column>
-      <Grid.Column>
-        <ListBag/>
-      </Grid.Column>
-    </Grid.Row>
-  </Grid>
-</div>
-
-
-export default SubmitData;
-
-
-
+export default AddViewLocations;
